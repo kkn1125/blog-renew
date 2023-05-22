@@ -1,8 +1,10 @@
 import { getAllArticles } from "../src/libs/mdx";
 
-export default function Home(props: any) {
-  console.log(props)
-  return <div>tes</div>;
+export default function Home({posts}: any) {
+  console.log(posts)
+  return <div>
+    {posts.length}
+  </div>;
 }
 
 export async function getStaticProps() {

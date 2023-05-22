@@ -21,6 +21,7 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
+  transpilePackages: ["react-syntax-highlighter"],
 };
 
 module.exports = withMDX(nextConfig);

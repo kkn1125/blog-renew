@@ -16,7 +16,17 @@ export const serializeMdx = (source: string) => {
   });
 };
 
-const articlesPath = path.join(process.cwd(), "pages/blog");
+const articlesPath = path.join(process.cwd(), "src/blog");
+
+export async function getAllSlugNames() {
+  const paths = globSync("src/blog/**/*.mdx").map((path) =>
+    path
+      .split(/\\+|\/+/)
+      .pop()
+      ?.replace(/\.mdx/, "")
+  );
+  return paths;
+}
 
 export async function getSlug() {
   const paths = sync(`${articlesPath}/*.mdx`);
@@ -39,23 +49,23 @@ export async function getArticleFromSlug(slug: string) {
   return {
     content,
     frontmatter: {
-      slug,
-      excerpt: data.excerpt,
+      slug: slug,
+      excerpt: data.excerpt || "",
       title: data.title,
-      publishedAt: data.publishedAt,
+      publishedAt: data.date || new Date().toLocaleString("ko"),
       readingTime: readingTime(source).text,
-      ...data,
+      ...Object.fromEntries(Object.entries(data).map(([k, v]) => [k, v || ""])),
     },
   };
 }
 
 export async function getAllArticles() {
-  const articles = fs.readdirSync(path.join(process.cwd(), "pages/blog"));
+  const articles = fs.readdirSync(path.join(process.cwd(), "src/blog"));
 
   return articles.reduce((allArticles: any, articleSlug) => {
     // get parsed data from mdx files in the "articles" dir
     const source = fs.readFileSync(
-      path.join(process.cwd(), "pages/blog", articleSlug),
+      path.join(process.cwd(), "src/blog", articleSlug),
       "utf-8"
     );
     const { data } = matter(source);
