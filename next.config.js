@@ -20,8 +20,21 @@ const nextConfig = {
   // reactStrictMode: true,
   experimental: {
     mdxRs: true,
+    appDir: true,
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = { fs: false };
+    }
+
+    return config;
   },
   transpilePackages: ["react-syntax-highlighter"],
+  // webpack: (config) => {
+  //   config.resolve.fallback = { fs: false };
+
+  //   return config;
+  // },
 };
 
 module.exports = withMDX(nextConfig);
