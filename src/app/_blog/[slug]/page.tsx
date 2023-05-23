@@ -1,14 +1,7 @@
-'use client'
-
-import { getArticleFromSlug } from "@/libs/mdx";
-// import { getArticleFromSlug } from "@/libs/slugs";
-import { GetStaticPaths } from "next";
 import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { tomorrowNight } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import PostLayout from "../../../layouts/PostLayout";
-// import { getAllSlugNames, getArticleFromSlug } from "../../../libs/mdx";
 
 interface CodeBlockProps {
   children: string;
@@ -30,25 +23,23 @@ const components = {
   },
 };
 
-export default async function Page(props: any) {
-  const { source } = await getData(props.params.slug) as any;
-
-  return (
-    <PostLayout>
-      <div>{source.frontmatter?.title || ''}</div>
-      <MDXRemote {...source} components={components} />
-    </PostLayout>
-  );
+export async function generateMetadata({ params }: any) {
+  console.log("params", params);
+  return {
+    title: "test",
+  };
 }
 
-// export const getStaticPaths: GetStaticPaths = async (props) => {
-//   const slugs = await getAllSlugNames();
-//   console.log(slugs);
-//   return {
-//     paths: slugs.map((slug) => ({ params: { slug: slug } })),
-//     fallback: false, // See the "fallback" section below
-//   };
-// };
+export default async function Page(props: any) {
+  const { source } = (await getData(props.params.slug)) as any;
+
+  return (
+    <div>
+      <div>{source.frontmatter?.title || ""}</div>
+      <MDXRemote {...source} components={components} />
+    </div>
+  );
+}
 
 async function getData(slug: string) {
   const slugs = await fetch(`http://localhost:3000/api/blog/slug/${slug}`);
@@ -56,8 +47,8 @@ async function getData(slug: string) {
   const mdxSource = await serialize(post.content || "", {
     parseFrontmatter: true,
     mdxOptions: {
-      development: true
-    }
+      development: true,
+    },
   });
   mdxSource.frontmatter = post.frontmatter;
   return {
@@ -65,15 +56,3 @@ async function getData(slug: string) {
     source: mdxSource,
   };
 }
-
-// async function getData(slug: string) {
-//   const postData = await getArticleFromSlug(slug);
-//   const mdxSource = await serialize(postData.content, {
-//     parseFrontmatter: true,
-//   });
-//   mdxSource.frontmatter = postData.frontmatter;
-//   return {
-//     postData,
-//     source: mdxSource,
-//   };
-// }

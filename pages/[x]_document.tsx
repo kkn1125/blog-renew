@@ -11,7 +11,7 @@ import Document, {
 import * as React from "react";
 import createEmotionCache from "../src/libs/createEmotionCache";
 import theme, { roboto } from "../src/libs/theme";
-import { MyAppProps } from "./_app";
+import { MyAppProps } from "./[x]_app";
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];
@@ -19,7 +19,7 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang='en' className={roboto.className}>
+    <Html lang='ko' className={roboto.className}>
       <Head>
         {/* PWA primary color */}
         <meta name='theme-color' content={theme.palette.primary.main} />

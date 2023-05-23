@@ -7,7 +7,7 @@ const basePath = "src/database";
 const articlesPath = path.join(process.cwd(), basePath);
 
 export async function GET(request: Request) {
-  const paths = sync(`${basePath}/*.mdx`);
+  const paths = sync(`${articlesPath}/*.mdx`);
   const pathList = paths.map((path) => {
     // holds the paths to the directory of the article
     const pathContent = path.split(/\/+|\\+/);

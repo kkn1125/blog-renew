@@ -17,10 +17,29 @@ const nextConfig = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   output: "export",
   swcMinify: true,
-  // reactStrictMode: true,
+  // compiler: {
+  //   emotion: true,
+  // },
+  reactStrictMode: true,
   experimental: {
+    swcTraceProfiling: true,
     mdxRs: true,
     appDir: true,
+    turbo: {
+      loaders: {
+        // Option format
+        ".md": [
+          {
+            loader: "@mdx-js/loader",
+            options: {
+              format: "md",
+            },
+          },
+        ],
+        // Option-less format
+        ".mdx": ["@mdx-js/loader"],
+      },
+    },
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
